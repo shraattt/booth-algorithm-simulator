@@ -17,18 +17,18 @@ interface StepTableProps {
 const StepTable = ({ steps, currentStep }: StepTableProps) => {
   return (
     <div className="space-y-4">
-      <h3 className="text-xl font-semibold text-accent">Step-by-Step Process</h3>
+      <h3 className="text-xl font-semibold title-fancy">Step-by-Step Process</h3>
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow className="border-border hover:bg-transparent">
-              <TableHead className="text-accent font-semibold">Step</TableHead>
-              <TableHead className="text-accent font-semibold">Operation</TableHead>
-              <TableHead className="text-accent font-semibold">Accumulator (A)</TableHead>
-              <TableHead className="text-accent font-semibold">Multiplier (Q)</TableHead>
-              <TableHead className="text-accent font-semibold">Q₋₁</TableHead>
-              <TableHead className="text-accent font-semibold">Multiplicand (M)</TableHead>
-              <TableHead className="text-accent font-semibold">Explanation</TableHead>
+              <TableHead className="text-accent font-semibold hover-glow">Step</TableHead>
+              <TableHead className="text-accent font-semibold hover-glow">Operation</TableHead>
+              <TableHead className="text-accent font-semibold hover-glow">Accumulator (A)</TableHead>
+              <TableHead className="text-accent font-semibold hover-glow">Multiplier (Q)</TableHead>
+              <TableHead className="text-accent font-semibold hover-glow">Q₋₁</TableHead>
+              <TableHead className="text-accent font-semibold hover-glow">Multiplicand (M)</TableHead>
+              <TableHead className="text-accent font-semibold hover-glow">Explanation</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -36,10 +36,10 @@ const StepTable = ({ steps, currentStep }: StepTableProps) => {
               <TableRow
                 key={index}
                 className={cn(
-                  "border-border transition-all duration-300",
+                  "border-border transition-all duration-300 hover:scale-[1.001]",
                   index === currentStep - 1
-                    ? "bg-accent/20 animate-glow-pulse"
-                    : "hover:bg-accent/5"
+                    ? "bg-accent/20 animate-glow-pulse shadow-[0_6px_30px_hsl(var(--accent)/0.08)]"
+                    : "hover:bg-accent/5 hover-glow"
                 )}
               >
                 <TableCell className="font-mono">{step.step}</TableCell>

@@ -15,7 +15,7 @@ const QuizMode = () => {
     steps: BoothStep[];
     currentStepIndex: number;
   } | null>(null);
-  
+
   const [answer, setAnswer] = useState("");
   const [operationAnswer, setOperationAnswer] = useState("");
   const [showResult, setShowResult] = useState(false);
@@ -23,10 +23,17 @@ const QuizMode = () => {
   const [score, setScore] = useState({ correct: 0, total: 0 });
 
   const generateQuestion = () => {
-    // Generate random 4-bit binary numbers
-    const mult1 = Math.floor(Math.random() * 8) - 4; // -4 to 3
-    const mult2 = Math.floor(Math.random() * 8) - 4;
-    
+    // Generate random 4-bit binary numbers with a wider range
+    const getRandomNumber = () => {
+      // Generate numbers in range [-7, 7] but with higher probability of negative numbers
+      const values = [-7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7];
+      const index = Math.floor(Math.pow(Math.random(), 1.5) * values.length);
+      return values[index];
+    };
+
+    const mult1 = getRandomNumber();
+    const mult2 = getRandomNumber();
+
     const toBinary = (num: number): string => {
       if (num >= 0) {
         return num.toString(2).padStart(4, "0");
@@ -34,16 +41,16 @@ const QuizMode = () => {
         // Two's complement for negative numbers
         const positive = Math.abs(num);
         const binary = positive.toString(2).padStart(4, "0");
-        let inverted = binary.split("").map(b => (b === "0" ? "1" : "0")).join("");
+        const inverted = binary.split("").map(b => (b === "0" ? "1" : "0")).join("");
         let carry = 1;
         let result = "";
-        
+
         for (let i = inverted.length - 1; i >= 0; i--) {
           const sum = parseInt(inverted[i]) + carry;
           result = (sum % 2) + result;
           carry = Math.floor(sum / 2);
         }
-        
+
         return result;
       }
     };
@@ -51,7 +58,7 @@ const QuizMode = () => {
     const multiplicand = toBinary(mult1);
     const multiplier = toBinary(mult2);
     const steps = boothMultiplication(multiplicand, multiplier);
-    
+
     // Pick a random step (not the first one)
     const stepIndex = Math.floor(Math.random() * (steps.length - 1)) + 1;
 
@@ -75,10 +82,10 @@ const QuizMode = () => {
 
     const currentStep = question.steps[question.currentStepIndex];
     const correctAcc = currentStep.accumulator;
-    
+
     // Check accumulator value
     const accCorrect = answer === correctAcc;
-    
+
     // Check operation (simplified check)
     let opCorrect = false;
     if (operationAnswer === "add" && currentStep.operation.includes("A + M")) {
@@ -147,15 +154,21 @@ const QuizMode = () => {
               <RadioGroup value={operationAnswer} onValueChange={setOperationAnswer}>
                 <div className="flex items-center space-x-2 p-3 rounded-lg hover:bg-accent/5 transition-all duration-300">
                   <RadioGroupItem value="add" id="add" />
-                  <Label htmlFor="add" className="cursor-pointer flex-1">add m (a = a + m)</Label>
+                  <Label htmlFor="add" className="cursor-pointer flex-1 hover-glow">
+                    {currentStep.operation.includes("A + M") ? "add m (a = a + m)" : "Add m (a = a + m)"}
+                  </Label>
                 </div>
                 <div className="flex items-center space-x-2 p-3 rounded-lg hover:bg-accent/5 transition-all duration-300">
                   <RadioGroupItem value="subtract" id="subtract" />
-                  <Label htmlFor="subtract" className="cursor-pointer flex-1">subtract m (a = a - m)</Label>
+                  <Label htmlFor="subtract" className="cursor-pointer flex-1 hover-glow">
+                    {currentStep.operation.includes("A - M") ? "subtract m (a = a - m)" : "Subtract m (a = a - m)"}
+                  </Label>
                 </div>
                 <div className="flex items-center space-x-2 p-3 rounded-lg hover:bg-accent/5 transition-all duration-300">
                   <RadioGroupItem value="none" id="none" />
-                  <Label htmlFor="none" className="cursor-pointer flex-1">no operation</Label>
+                  <Label htmlFor="none" className="cursor-pointer flex-1 hover-glow">
+                    {currentStep.operation === "No operation → ASR" ? "no operation" : "No operation"}
+                  </Label>
                 </div>
               </RadioGroup>
             </div>
@@ -171,7 +184,7 @@ const QuizMode = () => {
                   const filtered = e.target.value.replace(/[^01]/g, "");
                   setAnswer(filtered);
                 }}
-                placeholder={showResult ? `Correct answer: ${currentStep.accumulator}` : "Enter binary value"}
+                placeholder={showResult ? `Correct answer: ${currentStep.accumulator}` : `Example format: ${currentStep.accumulator}`}
                 className="font-mono bg-secondary border-border hover:border-accent transition-all duration-300 focus:border-accent"
               />
             </div>

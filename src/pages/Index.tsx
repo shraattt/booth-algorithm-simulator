@@ -42,7 +42,7 @@ const Index = () => {
         multiplicand,
         multiplier,
         result: finalStep.accumulator + finalStep.multiplier.slice(0, -1),
-        steps: calculatedSteps as any,
+        steps: calculatedSteps as unknown,
       });
 
       setRefreshHistory((prev) => prev + 1);
@@ -71,19 +71,19 @@ const Index = () => {
 
     if (currentStep < steps.length) {
       setCurrentStep((prev) => prev + 1);
-      
+
       if (currentStep === steps.length - 1) {
         const finalStep = steps[steps.length - 1];
         setResult(finalStep.accumulator + finalStep.multiplier.slice(0, -1));
-        
+
         // Save to database when finished
         supabase.from("booth_history").insert({
           multiplicand,
           multiplier,
           result: finalStep.accumulator + finalStep.multiplier.slice(0, -1),
-          steps: steps as any,
+          steps: steps as unknown,
         });
-        
+
         setRefreshHistory((prev) => prev + 1);
       }
     }
@@ -118,10 +118,10 @@ const Index = () => {
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div className="text-center space-y-3 animate-fade-in">
-          <h1 className="text-4xl md:text-5xl font-bold accent-glow">
-            Booth Algorithm Simulator
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight pb-2 title-fancy">
+            Booth Algorithm <span className="ml-2">Simulator</span>
           </h1>
-          <p className="text-muted-foreground text-lg">
+          <p className="text-muted-foreground text-lg hover-glow pt-1">
             Interactive step-by-step binary multiplication using Booth's algorithm
           </p>
           <InfoTooltip />
@@ -192,6 +192,7 @@ const Index = () => {
                   result={result}
                   multiplicand={multiplicand}
                   multiplier={multiplier}
+                  autoScroll={currentStep >= steps.length && isRunning}
                 />
               </Card>
             )}
