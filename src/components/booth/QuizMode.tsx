@@ -147,15 +147,15 @@ const QuizMode = () => {
               <RadioGroup value={operationAnswer} onValueChange={setOperationAnswer}>
                 <div className="flex items-center space-x-2 p-3 rounded-lg hover:bg-accent/5 transition-all duration-300">
                   <RadioGroupItem value="add" id="add" />
-                  <Label htmlFor="add" className="cursor-pointer flex-1">Add M (A = A + M)</Label>
+                  <Label htmlFor="add" className="cursor-pointer flex-1">add m (a = a + m)</Label>
                 </div>
                 <div className="flex items-center space-x-2 p-3 rounded-lg hover:bg-accent/5 transition-all duration-300">
                   <RadioGroupItem value="subtract" id="subtract" />
-                  <Label htmlFor="subtract" className="cursor-pointer flex-1">Subtract M (A = A - M)</Label>
+                  <Label htmlFor="subtract" className="cursor-pointer flex-1">subtract m (a = a - m)</Label>
                 </div>
                 <div className="flex items-center space-x-2 p-3 rounded-lg hover:bg-accent/5 transition-all duration-300">
                   <RadioGroupItem value="none" id="none" />
-                  <Label htmlFor="none" className="cursor-pointer flex-1">No operation</Label>
+                  <Label htmlFor="none" className="cursor-pointer flex-1">no operation</Label>
                 </div>
               </RadioGroup>
             </div>
@@ -171,7 +171,7 @@ const QuizMode = () => {
                   const filtered = e.target.value.replace(/[^01]/g, "");
                   setAnswer(filtered);
                 }}
-                placeholder="Enter binary value (e.g., 0010)"
+                placeholder={showResult ? `Correct answer: ${currentStep.accumulator}` : "Enter binary value"}
                 className="font-mono bg-secondary border-border hover:border-accent transition-all duration-300 focus:border-accent"
               />
             </div>
